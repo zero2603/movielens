@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 from scipy.spatial import distance
 
-ratings = np.array(pd.read_csv("data/ratings.csv", sep='\t', usecols=['user_id', 'movie_id', 'rating']))
-movies = np.array(pd.read_csv("data/movies.csv", sep='\t', usecols=['movie_id', 'title', 'genres']))
+ratings = np.array(pd.read_csv("../data/ratings.csv", sep='\t', usecols=['user_id', 'movie_id', 'rating']))
+movies = np.array(pd.read_csv("../data/movies.csv", sep='\t', usecols=['movie_id', 'title', 'genres']))
 
 u_count = max(ratings[:, 0]) + 1 # number of users (plus 1 because array index start from 0)
 m_count = max(ratings[:, 1]) + 1 # number of movies (plus 1 because array index start from 0)
@@ -25,7 +25,7 @@ for i in range(u_count):
         if r_mat[i][j] != 0:  
             r_mat[i][j] -= r_mean[i]
 
-def predict_score(u, mov, k=12):
+def predict_score(u, mov, k=10):
     # Find users who have rated 'mov'
     rated_u = np.array(np.nonzero(r_mat[:,mov]))
         
@@ -76,6 +76,6 @@ for i in range(1, len(user_ratings)):
 recommended_movies_id = sorted(predict_ratings, key=lambda x: predict_ratings[x], reverse=True)
 recommended_movies_id = recommended_movies_id[:12]
 
-with open('recommended/user/' + str(user_id) + '.txt', 'w+') as f:
+with open('../recommended/user/' + str(user_id) + '.txt', 'w+') as f:
     for item in recommended_movies_id:
         f.write("%s\n" % item)

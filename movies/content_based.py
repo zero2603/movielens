@@ -28,7 +28,7 @@ cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
 def recommend(movie_id):
         sim_scores = list(enumerate(cosine_sim[movie_id]))
         sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-        sim_scores = sim_scores[0:7]
+        sim_scores = sim_scores[0:6]
 
         movie_indices = []
         for i in sim_scores: 
