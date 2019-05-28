@@ -152,13 +152,13 @@ rate_train, rate_test = train_test_split(ratings, test_size=0.05, random_state=4
 rs = MatrixFactorization(rate_train, K = 2, lambda_param = 0.1, learning_rate = 5, loop = 20)
 rs.fit()
 # evaluate on test data
-RMSE = rs.evaluate_RMSE(rate_test)
-print '\nItem-based MF, RMSE =', RMSE
-# user_id = 1
-# predict_ratings = rs.predict_for_user(user_id)
-# recommended_movie_ids = sorted(predict_ratings, key=lambda x: predict_ratings[x], reverse=True)
-# recommended_movie_ids = recommended_movie_ids[:12]
+# RMSE = rs.evaluate_RMSE(rate_test)
+# print '\nItem-based MF, RMSE =', RMSE
+user_id = 3
+predict_ratings = rs.predict_for_user(user_id)
+recommended_movie_ids = sorted(predict_ratings, key=lambda x: predict_ratings[x], reverse=True)
+recommended_movie_ids = recommended_movie_ids[:12]
 
-# with open('../recommended/mf/' + str(user_id) + '.txt', 'w+') as f:
-#     for item in recommended_movie_ids:
-#         f.write("%s\n" % item)
+with open('../recommended/mf/' + str(user_id) + '.txt', 'w+') as f:
+    for item in recommended_movie_ids:
+        f.write("%s\n" % item)
