@@ -14,9 +14,15 @@ def index(request):
     if request.session.get('user_id'):
         user_id = request.session.get('user_id') 
 
+    # recommended_movies = []
+    # if request.session.get('recommended_movies'):
+    #     recommended_movies = request.session.get('recommended_movies')
+
     context = {
         'movies': movies[:20], 
         'user_id': user_id,
+        # 'recommended_movies_1': recommended_movies[6:],
+        # 'recommended_movies_2': recommended_movies[:6]
     }
     return HttpResponse(template.render(context, request)) 
 
@@ -27,7 +33,7 @@ def login(request):
         request.session['user_id'] = request.POST['username']
     user_id = request.session['user_id']
 
-    with open("recommended/user/" + request.session['user_id'] + ".txt") as f:
+    with open("recommended/mf/" + request.session['user_id'] + ".txt") as f:
         recommended_movies_id = f.readlines()
     recommended_movies_id = map(int, recommended_movies_id)
     
@@ -36,11 +42,13 @@ def login(request):
         if item[0] in recommended_movies_id:
             recommended_movies.append(item)
 
+    # request.session['recommended_movies'] = recommended_movies
+
     context = {
         'movies': movies[:20], 
         'user_id': user_id, 
-        'recommended_movies_1': recommended_movies[4:],
-        'recommended_movies_2': recommended_movies[:4],
+        'recommended_movies_1': recommended_movies[6:],
+        'recommended_movies_2': recommended_movies[:6],
     }
     return HttpResponse(template.render(context, request))
 
@@ -49,6 +57,7 @@ def get_detail(request):
     movie_id = int(request.GET.get('movie'))
     movie= None
     
+    user_id = 0
     if request.session.get('user_id'):
         user_id = request.session.get('user_id') 
 
