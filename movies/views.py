@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import content_based
 
-movies = np.array(pd.read_csv("data/movies.csv", sep='\t', usecols=['movie_id', 'title', 'genres']))
+movies = np.array(pd.read_csv("data/movies.csv", sep='\t'))
 
 def index(request):
     template = loader.get_template('home.html')
@@ -62,11 +62,12 @@ def get_detail(request):
         user_id = request.session.get('user_id') 
 
     for item in movies:
-        if item[0] == movie_id:
+        if item[1] == movie_id:
+            movie_index = item[0]
             movie = item
             break
 
-    recommended_movies_id = content_based.recommend(movie_id)
+    recommended_movies_id = content_based.recommend(movie_index)
     recommended_movies = []
     for item in movies:
         if item[0] in recommended_movies_id:

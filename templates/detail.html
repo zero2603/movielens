@@ -7,8 +7,8 @@
         <img class="movie-poster-detail" id="{{movie.0}}">
     </div>
     <div class="col-md-6">
-        <h2>{{movie.1}}</h2>
-        <div id="genres_raw" class="d-none">{{movie.2}}</div>
+        <h2>{{movie.2}}</h2>
+        <div id="genres_raw" class="d-none">{{movie.3}}</div>
         <div id="genres"></div>
         <div class="mt-4">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit,
@@ -31,7 +31,8 @@
     <div class="col-md-2 mb-4">
         <a href="/detail?movie={{movie.0}}">
             <img class="recommended" src="" id="{{movie.0}}" />
-            <h5>{{ movie.1 }}</h5>
+            <h5>{{ movie.2 }}</h5>
+            <small>{{ movie.3 }}</small>
         </a>
     </div>
     {% endfor %}
