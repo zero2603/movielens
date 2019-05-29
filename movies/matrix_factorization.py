@@ -122,7 +122,7 @@ class MatrixFactorization(object):
     def predict_for_user(self, user_id):
         ids = np.where(self.Y_data_normalized[:, 0] == user_id)[0]
         items_rated_by_u = self.Y_data_normalized[ids, 1].tolist()
-
+        # print(items_rated_by_u)
         y_pred = self.X.dot(self.W[:, user_id]) + self.mu[user_id]
         predicted_ratings = {}
         for i in range(self.n_items):
@@ -146,19 +146,19 @@ ratings = ratings.as_matrix()
 
 # indices in Python start from 0
 ratings[:, :2] -= 1 
-
 rate_train, rate_test = train_test_split(ratings, test_size=0.05, random_state=42)
 
 rs = MatrixFactorization(rate_train, K = 2, lambda_param = 0.1, learning_rate = 0.5, loop = 20)
 rs.fit()
-# evaluate on test data
-RMSE = rs.evaluate_RMSE(rate_test)
-print '\nItem-based MF, RMSE =', RMSE
-# user_id = 3
-# predict_ratings = rs.predict_for_user(user_id)
-# recommended_movie_ids = sorted(predict_ratings, key=lambda x: predict_ratings[x], reverse=True)
-# recommended_movie_ids = recommended_movie_ids[:12]
+# # evaluate on test data
+# RMSE = rs.evaluate_RMSE(rate_test)
+# print '\nItem-based MF, RMSE =', RMSE
 
-# with open('../recommended/mf/' + str(user_id) + '.txt', 'w+') as f:
-#     for item in recommended_movie_ids:
-#         f.write("%s\n" % item)
+user_id = 3
+predict_ratings = rs.predict_for_user(user_id)
+recommended_movie_ids = sorted(predict_ratings, key=lambda x: predict_ratings[x], reverse=True)
+recommended_movie_ids = recommended_movie_ids[:12]
+
+with open('../recommended/mf/' + str(user_id) + '.txt', 'w+') as f:
+    for item in recommended_movie_ids:
+        f.write("%s\n" % item)

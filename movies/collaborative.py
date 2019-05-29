@@ -27,7 +27,7 @@ for i in range(u_count):
         if r_mat[i][j] != 0:  
             r_mat[i][j] -= r_mean[i]
 
-def predict_score(u, mov, k=10):
+def predict_score(u, mov, k=5):
     # Find users who have rated 'mov'
     rated_u = np.array(np.nonzero(r_mat[:,mov]))
         
@@ -81,19 +81,19 @@ def evaluate_RMSE(test_set):
     return RMSE
     
 
-# user_id = 1
-# predict_ratings = {}
-# user_ratings = r_mat[user_id, :].flatten().astype(float)
-# for i in range(1, len(user_ratings)):
-#     if user_ratings[i] == 0:
-#         user_ratings[i] = predict_score(user_id, i)
-#         predict_ratings[i] = user_ratings[i]
+user_id = 1
+predict_ratings = {}
+user_ratings = r_mat[user_id, :].flatten().astype(float)
 
-# recommended_movies_id = sorted(predict_ratings, key=lambda x: predict_ratings[x], reverse=True)
-# recommended_movies_id = recommended_movies_id[:12]
+for i in range(1, len(user_ratings)):
+    if user_ratings[i] == 0:
+        predict_ratings[i] = predict_score(user_id, i)
 
-# with open('../recommended/user/' + str(user_id) + '.txt', 'w+') as f:
-#     for item in recommended_movies_id:
-#         f.write("%s\n" % item)
+recommended_movies_id = sorted(predict_ratings, key=lambda x: predict_ratings[x], reverse=True)
+recommended_movies_id = recommended_movies_id[:12]
 
-print evaluate_RMSE(ratings_test)
+with open('../recommended/user/' + str(user_id) + '.txt', 'w+') as f:
+    for item in recommended_movies_id:
+        f.write("%s\n" % item)
+
+# print evaluate_RMSE(ratings_test)
